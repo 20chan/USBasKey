@@ -1,0 +1,8 @@
+N:\C#\USBasKey\USBasKey\bin\Debug\USBasKey.exe.config
+N:\C#\USBasKey\USBasKey\bin\Debug\USBasKey.exe
+N:\C#\USBasKey\USBasKey\bin\Debug\USBasKey.pdb
+N:\C#\USBasKey\USBasKey\obj\Debug\USBasKey.csprojResolveAssemblyReference.cache
+N:\C#\USBasKey\USBasKey\obj\Debug\USBasKey.Properties.Resources.resources
+N:\C#\USBasKey\USBasKey\obj\Debug\USBasKey.csproj.GenerateResource.Cache
+N:\C#\USBasKey\USBasKey\obj\Debug\USBasKey.exe
+N:\C#\USBasKey\USBasKey\obj\Debug\USBasKey.pdb
