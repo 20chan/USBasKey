@@ -1,0 +1,10 @@
+N:\C#\USBasKey\KeyMaker\bin\Debug\KeyMaker.exe.config
+N:\C#\USBasKey\KeyMaker\bin\Debug\KeyMaker.exe
+N:\C#\USBasKey\KeyMaker\bin\Debug\KeyMaker.pdb
+N:\C#\USBasKey\KeyMaker\obj\Debug\KeyMaker.csprojResolveAssemblyReference.cache
+N:\C#\USBasKey\KeyMaker\obj\Debug\KeyMaker.Form1.resources
+N:\C#\USBasKey\KeyMaker\obj\Debug\KeyMaker.Properties.Resources.resources
+N:\C#\USBasKey\KeyMaker\obj\Debug\KeyMaker.csproj.GenerateResource.Cache
+N:\C#\USBasKey\KeyMaker\obj\Debug\KeyMaker.exe
+N:\C#\USBasKey\KeyMaker\obj\Debug\KeyMaker.pdb
+N:\C#\USBasKey\KeyMaker\bin\Debug\System.Net.Http.dll
