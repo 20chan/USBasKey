@@ -19,7 +19,7 @@ namespace USBasKey
     public partial class Form1 : Form
     {
         Size fullScreen;
-        public static string pin = "1234";
+        public static string pin = "314159265358979323846264338327950288";
 
         [DllImport("user32.dll")]
         private static extern int SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
@@ -47,10 +47,7 @@ namespace USBasKey
         private static int _hookID = 0;
         private static LowLevelKeyboardProc _proc = HookCallback;
 
-        /// <summary>
-        /// 여기에 자신의 USB 시리얼 넘버를..
-        /// </summary>
-        string key = "20042204511DF5A239B9";
+        string[] keys;
 
         public static void Exit()
         {
@@ -62,8 +59,12 @@ namespace USBasKey
         {
             InitializeComponent();
 
+            StreamReader sr = new StreamReader("password.dat");
+            string text = sr.ReadToEnd();
+
+            keys = text.Split('\n');
+
             
-            /*
             using (Process curProcess = Process.GetCurrentProcess())
             using (ProcessModule curModule = curProcess.MainModule)
             {
@@ -74,20 +75,19 @@ namespace USBasKey
             this.TopMost = true;
             this.Location = new Point(0, 0);
             this.Size = new Size(10000, 10000);
-            */
-            if (!File.Exists(Environment.CurrentDirectory + "\\Crypt.dll"))
-            {
-                StreamWriter sr = new StreamWriter(Environment.CurrentDirectory + "\\Crypt.dll");
-                sr.Write(key);
-                sr.Flush();
-                sr.Dispose();
-            }
+            
         }
 
         ~Form1()
         {
+            end();
+        }
+
+        void end()
+        {
             SetTaskManager(true);
             UnhookWindowsHookEx(_hookID);
+            Application.Exit();
         }
         private static int HookCallback(int nCode, int wParam, ref KBDLLHOOKSTRUCT lParam)
         {
@@ -150,32 +150,22 @@ namespace USBasKey
                 System.IO.DriveInfo dr = new System.IO.DriveInfo(device);
                 if (dr.DriveType != System.IO.DriveType.Removable) continue;
                 if (Check(device))
-                    Application.Exit();
+                {
+                    end();
+                }
             }
         }
 
         bool Check(string deviceDirect)
         {
-            /*
-            string fullname = deviceDirect + "Crypt.dll";
-            if (!System.IO.File.Exists(fullname))
-                return false;
-            FileInfo f = new FileInfo(fullname);
-            if ((f.Attributes | FileAttributes.Hidden) != f.Attributes)
-                return false;
-
-            //File.SetAttributes(deviceDirect, FileAttributes.Normal);
-            foreach (string s in File.ReadAllLines(fullname))
-            {
-                if (s.StartsWith(key)) return true;
-            }
-            return false;
-            */
             
             USBSerialNumber usb = new USBSerialNumber();
             string serial = usb.getSerialNumberFromDriveLetter(deviceDirect.Substring(0, 2));
-            if (serial == key)
-                return true;
+            foreach(string s in keys)
+            {
+                if (s == serial)
+                    return true;
+            }
             return false;
         }
 

@@ -46,7 +46,7 @@
             this.listView1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(301, 195);
+            this.listView1.Size = new System.Drawing.Size(322, 195);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -54,7 +54,7 @@
             // 이름
             // 
             this.이름.Text = "이름";
-            this.이름.Width = 180;
+            this.이름.Width = 206;
             // 
             // 경로
             // 
@@ -63,11 +63,11 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(319, 15);
+            this.button1.Location = new System.Drawing.Point(340, 15);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(162, 52);
+            this.button1.Size = new System.Drawing.Size(208, 52);
             this.button1.TabIndex = 1;
-            this.button1.Text = "선택한 USB에 쓰기";
+            this.button1.Text = "선택한 USB를 패스워드에 추가";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -75,7 +75,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(493, 223);
+            this.ClientSize = new System.Drawing.Size(560, 223);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.listView1);
             this.Font = new System.Drawing.Font("맑은 고딕", 9F);
@@ -83,6 +83,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Form1";
             this.Text = "USB 에 쓰기";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
         }
