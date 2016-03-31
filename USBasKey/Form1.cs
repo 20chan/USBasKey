@@ -50,7 +50,7 @@ namespace USBasKey
         /// <summary>
         /// 여기에 자신의 USB 시리얼 넘버를..
         /// </summary>
-        string key = "여기가 USB 시리얼 넘버... 아직 귀찮아서 가져오는건 안만들었음";
+        string key = "20042204511DF5A239B9";
 
         public static void Exit()
         {
@@ -114,7 +114,8 @@ namespace USBasKey
 
                 if (devType == DBT_DEVTUP_VOLUME)
                 {
-                    Evented();
+                    System.Threading.Thread t = new System.Threading.Thread(Evented);
+                    t.Start();
                 }
             }
 
@@ -123,7 +124,8 @@ namespace USBasKey
                 int devType = Marshal.ReadInt32(m.LParam, 4);
                 if (devType == DBT_DEVTUP_VOLUME)
                 {
-                    Evented();
+                    System.Threading.Thread t = new System.Threading.Thread(Evented);
+                    t.Start();
                 }
             }
 
