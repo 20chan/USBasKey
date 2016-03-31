@@ -9,3 +9,15 @@ N:\C#\USBasKey\USBasKey\obj\Debug\USBasKey.pdb
 N:\C#\USBasKey\USBasKey\bin\Debug\Settings.txt
 N:\C#\USBasKey\USBasKey\obj\Debug\USBasKey.Form1.resources
 N:\C#\USBasKey\USBasKey\bin\Debug\System.Net.Http.dll
+N:\C#\USBasKey\USBasKey\obj\Debug\USBasKey.Pin.resources
+E:\C#\USBasKey\USBasKey\bin\Debug\USBasKey.exe.config
+E:\C#\USBasKey\USBasKey\obj\Debug\USBasKey.exe
+E:\C#\USBasKey\USBasKey\obj\Debug\USBasKey.pdb
+E:\C#\USBasKey\USBasKey\bin\Debug\Settings.txt
+E:\C#\USBasKey\USBasKey\bin\Debug\USBasKey.exe
+E:\C#\USBasKey\USBasKey\bin\Debug\USBasKey.pdb
+E:\C#\USBasKey\USBasKey\obj\Debug\USBasKey.csprojResolveAssemblyReference.cache
+E:\C#\USBasKey\USBasKey\obj\Debug\USBasKey.Form1.resources
+E:\C#\USBasKey\USBasKey\obj\Debug\USBasKey.Pin.resources
+E:\C#\USBasKey\USBasKey\obj\Debug\USBasKey.Properties.Resources.resources
+E:\C#\USBasKey\USBasKey\obj\Debug\USBasKey.csproj.GenerateResource.Cache

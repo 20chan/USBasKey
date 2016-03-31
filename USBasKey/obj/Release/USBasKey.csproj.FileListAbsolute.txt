@@ -1,0 +1,10 @@
+E:\C#\USBasKey\USBasKey\bin\Release\USBasKey.exe.config
+E:\C#\USBasKey\USBasKey\bin\Release\Settings.txt
+E:\C#\USBasKey\USBasKey\bin\Release\USBasKey.exe
+E:\C#\USBasKey\USBasKey\bin\Release\USBasKey.pdb
+E:\C#\USBasKey\USBasKey\obj\Release\USBasKey.Form1.resources
+E:\C#\USBasKey\USBasKey\obj\Release\USBasKey.Pin.resources
+E:\C#\USBasKey\USBasKey\obj\Release\USBasKey.Properties.Resources.resources
+E:\C#\USBasKey\USBasKey\obj\Release\USBasKey.csproj.GenerateResource.Cache
+E:\C#\USBasKey\USBasKey\obj\Release\USBasKey.exe
+E:\C#\USBasKey\USBasKey\obj\Release\USBasKey.pdb

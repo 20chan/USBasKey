@@ -11,13 +11,16 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 using System.IO;
+using System.Management;
+using System.Management.Instrumentation;
 
 namespace USBasKey
 {
     public partial class Form1 : Form
     {
         Size fullScreen;
-        
+        public static string pin = "1234";
+
         [DllImport("user32.dll")]
         private static extern int SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
         [DllImport("user32.dll")]
@@ -43,17 +46,24 @@ namespace USBasKey
         private delegate int LowLevelKeyboardProc(int nCode, int wParam, ref KBDLLHOOKSTRUCT lParam);
         private static int _hookID = 0;
         private static LowLevelKeyboardProc _proc = HookCallback;
-        string key = "";
+
+        /// <summary>
+        /// 여기에 자신의 USB 시리얼 넘버를..
+        /// </summary>
+        string key = "여기가 USB 시리얼 넘버... 아직 귀찮아서 가져오는건 안만들었음";
+
+        public static void Exit()
+        {
+            SetTaskManager(true);
+            UnhookWindowsHookEx(_hookID);
+            Application.Exit();
+        }
         public Form1()
         {
             InitializeComponent();
 
-            foreach(string s in File.ReadAllLines(Environment.CurrentDirectory + "\\Settings.txt"))
-            {
-                if (s.StartsWith("//")) continue;
-                key += s;
-            }
-
+            
+            /*
             using (Process curProcess = Process.GetCurrentProcess())
             using (ProcessModule curModule = curProcess.MainModule)
             {
@@ -64,7 +74,8 @@ namespace USBasKey
             this.TopMost = true;
             this.Location = new Point(0, 0);
             this.Size = new Size(10000, 10000);
-            if(!File.Exists(Environment.CurrentDirectory + "\\Crypt.dll"))
+            */
+            if (!File.Exists(Environment.CurrentDirectory + "\\Crypt.dll"))
             {
                 StreamWriter sr = new StreamWriter(Environment.CurrentDirectory + "\\Crypt.dll");
                 sr.Write(key);
@@ -73,12 +84,10 @@ namespace USBasKey
             }
         }
 
-        void Exit()
+        ~Form1()
         {
             SetTaskManager(true);
             UnhookWindowsHookEx(_hookID);
-            Application.Exit();
-
         }
         private static int HookCallback(int nCode, int wParam, ref KBDLLHOOKSTRUCT lParam)
         {
@@ -121,7 +130,7 @@ namespace USBasKey
             base.WndProc(ref m);
         }
 
-        public void SetTaskManager(bool enable)
+        public static void SetTaskManager(bool enable)
         {
             RegistryKey objRegistryKey = Registry.CurrentUser.CreateSubKey(
                 @"Software\Microsoft\Windows\CurrentVersion\Policies\System");
@@ -134,17 +143,18 @@ namespace USBasKey
 
         void Evented()
         {
-            foreach(string device in System.IO.Directory.GetLogicalDrives())
+            foreach (string device in System.IO.Directory.GetLogicalDrives())
             {
                 System.IO.DriveInfo dr = new System.IO.DriveInfo(device);
                 if (dr.DriveType != System.IO.DriveType.Removable) continue;
                 if (Check(device))
-                    Exit();
+                    Application.Exit();
             }
         }
 
         bool Check(string deviceDirect)
         {
+            /*
             string fullname = deviceDirect + "Crypt.dll";
             if (!System.IO.File.Exists(fullname))
                 return false;
@@ -153,14 +163,21 @@ namespace USBasKey
                 return false;
 
             //File.SetAttributes(deviceDirect, FileAttributes.Normal);
-            foreach(string s in File.ReadAllLines(fullname))
+            foreach (string s in File.ReadAllLines(fullname))
             {
                 if (s.StartsWith(key)) return true;
             }
             return false;
+            */
+            
+            USBSerialNumber usb = new USBSerialNumber();
+            string serial = usb.getSerialNumberFromDriveLetter(deviceDirect.Substring(0, 2));
+            if (serial == key)
+                return true;
+            return false;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+    private void Form1_Load(object sender, EventArgs e)
         {
             Evented();
         }
@@ -168,6 +185,93 @@ namespace USBasKey
         private void timer1_Tick(object sender, EventArgs e)
         {
             this.label2.Text = string.Format("현재 시간 : {0}", DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss tt"));
+        }
+
+        private void label1_DoubleClick(object sender, EventArgs e)
+        {
+            Pin p = new Pin();
+            p.ShowDialog();
+        }
+    }
+
+    class USBSerialNumber
+    {
+        string _serialNumber;
+        string _driveLetter;
+
+        public string getSerialNumberFromDriveLetter(string driveLetter)
+        {
+            this._driveLetter = driveLetter.ToUpper();
+
+            if (!this._driveLetter.Contains(":"))
+            {
+                this._driveLetter += ":";
+            }
+
+            matchDriveLetterWithSerial();
+
+
+            return this._serialNumber;
+        }
+
+        private void matchDriveLetterWithSerial()
+        {
+
+            string[] diskArray;
+            string driveNumber;
+            string driveLetter;
+
+            ManagementObjectSearcher searcher1 = new ManagementObjectSearcher("SELECT * FROM Win32_LogicalDiskToPartition");
+
+            
+            foreach (ManagementObject dm in searcher1.Get())  // 여기서 에러가 계속 발생
+            {
+                diskArray = null;
+                driveLetter = getValueInQuotes(dm["Dependent"].ToString());
+                diskArray = getValueInQuotes(dm["Antecedent"].ToString()).Split(',');
+                driveNumber = diskArray[0].Remove(0, 6).Trim();
+                if (driveLetter == this._driveLetter)
+                {
+                    /* This is where we get the drive serial */
+                    ManagementObjectSearcher disks = new ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive");
+                    foreach (ManagementObject disk in disks.Get())
+                    {
+
+                        if (disk["Name"].ToString() == ("\\\\.\\PHYSICALDRIVE" + driveNumber) & disk["InterfaceType"].ToString() == "USB")
+                        {
+                            this._serialNumber = parseSerialFromDeviceID(disk["PNPDeviceID"].ToString());
+                        }
+                    }
+                }
+            }
+        }
+
+        private string parseSerialFromDeviceID(string deviceId)
+        {
+            string[] splitDeviceId = deviceId.Split('\\');
+            string[] serialArray;
+            string serial;
+            int arrayLen = splitDeviceId.Length - 1;
+
+            serialArray = splitDeviceId[arrayLen].Split('&');
+            serial = serialArray[0];
+
+            return serial;
+        }
+
+        private string getValueInQuotes(string inValue)
+        {
+            string parsedValue = "";
+
+            int posFoundStart = 0;
+            int posFoundEnd = 0;
+
+            posFoundStart = inValue.IndexOf("\"");
+            posFoundEnd = inValue.IndexOf("\"", posFoundStart + 1);
+
+            parsedValue = inValue.Substring(posFoundStart + 1, (posFoundEnd - posFoundStart) - 1);
+
+            return parsedValue;
         }
     }
 }

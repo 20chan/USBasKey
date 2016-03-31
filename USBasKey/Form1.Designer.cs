@@ -44,6 +44,7 @@
             this.label1.Size = new System.Drawing.Size(579, 99);
             this.label1.TabIndex = 0;
             this.label1.Text = "USB 보안 프로그램";
+            this.label1.DoubleClick += new System.EventHandler(this.label1_DoubleClick);
             // 
             // label2
             // 
