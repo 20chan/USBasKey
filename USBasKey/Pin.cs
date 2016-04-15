@@ -32,6 +32,8 @@ namespace USBasKey
 
         private void button11_Click(object sender, EventArgs e)
         {
+            if (textBox1.Text == "" || textBox1.Text == null)
+                return;
             textBox1.Text = textBox1.Text.Substring(0, textBox1.Text.Length - 1);
         }
 

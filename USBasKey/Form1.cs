@@ -19,7 +19,7 @@ namespace USBasKey
     public partial class Form1 : Form
     {
         Size fullScreen;
-        public static string pin = "314159265358979323846264338327950288";
+        public static string pin = "3141592653589";
 
         [DllImport("user32.dll")]
         private static extern int SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
